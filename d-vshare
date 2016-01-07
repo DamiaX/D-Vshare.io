@@ -2,7 +2,6 @@
 
 temp_files=(.temp.dvs .out.dvs);
 connect_test_url=(google.com facebook.com kernel.org);
-video_adress="http://vshare.io/d/379810b";
 arg1="$1";
 term="/dev/tty";
 
@@ -91,7 +90,7 @@ main()
 {
 clear;
 show_text 35 "D-Vshare.io"
-#test_connect;
+test_connect;
 check_arg;
 parse;
 download_file;
