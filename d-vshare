@@ -1,8 +1,11 @@
 #!/bin/bash
 
-temp_files=(.temp.dvs .out.dvs);
+version="0.1"
+temp_files=(.temp.dvs .out.dvs .title.dvs);
 connect_test_url=(google.com facebook.com kernel.org);
 arg1="$1";
+arg2="$2";
+
 term="/dev/tty";
 
 default_answer()
@@ -56,7 +59,13 @@ download_file()
 {
 link=`cat ${temp_files[1]};`;
 roz=`echo $link | awk 'BEGIN { FS = "." }; {print $4}'`;
+
+if [ -z "$arg2" ]; 
+then
 file_name_d="$RANDOM.$roz";
+else
+file_name_d="$arg2.$roz";
+fi
 
 if [ -z "$arg1" ]; 
 then
@@ -66,13 +75,12 @@ default_answer;
 
 if [[ $answer == "T" || $answer == "t" || $answer == "y" || $answer == "Y" ]]; 
 then
-wget $link -O $file_name_d;
+wget $link -O "$file_name_d";
 fi
 else
-wget $link -O $file_name_d;
+wget $link -O "$file_name_d";
 fi
 }
-
 
 check_arg()
 {
@@ -93,6 +101,7 @@ show_text 35 "D-Vshare.io"
 test_connect;
 check_arg;
 parse;
+echo $arg2
 download_file;
 show_text 34 "Autor: Damian Majchrzak (DamiaX).";
 }
