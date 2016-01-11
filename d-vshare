@@ -1,10 +1,12 @@
 #!/bin/bash
 
-version="0.1"
+version="0.2"
 temp_files=(.temp.dvs .out.dvs .title.dvs);
 connect_test_url=(google.com facebook.com kernel.org);
+video_dir="$HOME/vshare.io_movies"
 arg1="$1";
 arg2="$2";
+arg3="$3"
 
 term="/dev/tty";
 
@@ -12,6 +14,14 @@ default_answer()
 {
 if [ -z $answer ]; then
 answer='y';
+fi
+}
+
+check_data()
+{
+if [[ ! -d $video_dir ]] ;
+then
+mkdir $video_dir;
 fi
 }
 
@@ -55,6 +65,16 @@ awk -vRS="</program>" '{gsub(/.*<program.*>/,"");print}' ${temp_files[1]} > ${te
 grep "http*" ${temp_files[0]} > ${temp_files[1]};
 }
 
+download_dir()
+{
+if [ -z "$arg3" ];
+then
+wget $link -O "$video_dir/$file_name_d";
+else
+wget $link -O "$arg3/$file_name_d";
+fi
+}
+
 download_file()
 {
 link=`cat ${temp_files[1]};`;
@@ -75,10 +95,11 @@ default_answer;
 
 if [[ $answer == "T" || $answer == "t" || $answer == "y" || $answer == "Y" ]]; 
 then
-wget $link -O "$file_name_d";
+download_dir;
 fi
+
 else
-wget $link -O "$file_name_d";
+download_dir;
 fi
 }
 
@@ -91,6 +112,7 @@ read video_adress <$term
 wget -q $video_adress -O ${temp_files[0]};
 else
 wget -q $arg1 -O ${temp_files[0]};
+
 fi
 }
 
@@ -99,9 +121,9 @@ main()
 clear;
 show_text 35 "D-Vshare.io"
 test_connect;
+check_data;
 check_arg;
 parse;
-echo $arg2
 download_file;
 show_text 34 "Autor: Damian Majchrzak (DamiaX).";
 }
