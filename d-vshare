@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version="0.2"
+version="0.1"
 temp_files=(.temp.dvs .out.dvs .title.dvs);
 connect_test_url=(google.com facebook.com kernel.org);
 video_dir="$HOME/vshare.io_movies"
